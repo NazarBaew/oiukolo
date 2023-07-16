@@ -1,0 +1,51 @@
+#define TRIGGER_PIN1 11
+#define ECHO_PIN1 9
+
+#define BUZZER_PIN 4
+
+void setup() {
+  Serial.begin(9600);
+  
+  pinMode(TRIGGER_PIN1, OUTPUT);
+  pinMode(ECHO_PIN1, INPUT);
+  
+  pinMode(BUZZER_PIN, OUTPUT);
+}
+
+void loop() {
+  long distance1 = measureDistance(TRIGGER_PIN1, ECHO_PIN1);
+  
+  if(distance1 < 40) {
+    playTone(1000, 500);
+  }
+  if(distance1 < 30) {
+    playTone(2000, 500);
+  }
+  if(distance1 < 20) {
+    playTone(3000, 500);
+  }
+  if(distance1 < 10) {
+    playTone(4000, 500);
+  }
+  
+  delay(100);
+}
+
+long measureDistance(int triggerPin, int echoPin) {
+  digitalWrite(triggerPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(triggerPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(triggerPin, LOW);
+  
+  long duration = pulseIn(echoPin, HIGH);
+  long distance = duration * 0.034 / 2;
+  
+  return distance;
+}
+
+void playTone(int frequency, int duration) {
+  tone(BUZZER_PIN, frequency, duration);
+  delay(duration);
+  noTone(BUZZER_PIN);
+}
