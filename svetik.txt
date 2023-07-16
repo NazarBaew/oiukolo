@@ -1,0 +1,23 @@
+int pwm = 6;
+#define LED_PIN 7
+#define LED_NUM 72
+#include "FastLED.h"
+CRGB leds[LED_NUM];
+void setup(){
+  FastLED.addLeds< WS2812, LED_PIN, GRB>(leds, LED_NUM);
+  FastLED.setBrightness(50);
+  Serial.begin(9600);
+  pinMode(pwm, INPUT);
+}
+void loop(){
+  int val=pulseIn(pwm, HIGH);
+  Serial.println(); 
+  if (val>1500){
+    FastLED.showColor(CRGB :: Red);
+    FastLED.show();
+  }
+  else {
+    FastLED.showColor(CRGB :: Green);
+    FastLED.show();
+  }
+}
